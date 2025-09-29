@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key System</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        
+        /* Profile Card - Hình chữ nhật dọc */
+        .profile-card {
+            background: rgba(45, 45, 45, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Avatar */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            background: #333;
+        }
+        
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Thông tin user */
+        .user-info {
+            margin-bottom: 25px;
+        }
+        
+        .user-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .user-title {
+            color: #ccc;
+            font-size: 0.9em;
+        }
+        
+        /* Get Key Button */
+        .get-key-btn {
+            background: linear-gradient(45deg, #4776E6, #8E54E9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(142, 84, 233, 0.4);
+        }
+        
+        .get-key-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(142, 84, 233, 0.6);
+        }
+        
+        .get-key-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Follow Button */
+        .follow-btn {
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+        }
+        
+        .follow-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 114, 255, 0.6);
+        }
+        
+        .follow-btn:active {
+            transform: translateY(0);
+        }
+
+        .follow-btn.following {
+            background: linear-gradient(45deg, #00b09b, #96c93d);
+        }
+        
+        /* Content section */
+        .content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+        }
+        
+        /* Glowy Buttons */
+        .glow-button {
+            --button-background: linear-gradient(to right, #4776E6, #8E54E9);
+            --button-shadow: rgba(142, 84, 233, 0.5);
+            --button-shine: rgba(255, 255, 255, 0.2);
+            --button-text: #ffffff;
+            
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--button-background);
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--button-text);
+            text-decoration: none;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--button-shadow);
+            margin: 5px;
+        }
+
+        .glow-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--button-shadow);
+        }
+
+        .glow-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--button-shine),
+                transparent
+            );
+            transition: left 0.5s ease;
+        }
+
+        .glow-button:hover::before {
+            left: 100%;
+        }
+
+        .button-container {
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        /* Stats */
+        .stats {
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #ccc;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(45, 45, 45, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-direction: column;
+        }
+
+        .modal-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Linkvertise Button */
+        .linkvertise-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+        }
+
+        .linkvertise-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Lootlab Button */
+        .lootlab-btn {
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+            color: white;
+        }
+
+        .lootlab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .modal-description {
+            color: #ccc;
+            margin-bottom: 25px;
+            font-size: 0.9em;
+        }
+
+        /* Notification Modal Buttons */
+        .notification-modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .notification-modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .notification-modal-btn.accept {
+            background: linear-gradient(45deg, #00b09b, #96c93d);
+            color: white;
+        }
+
+        .notification-modal-btn.decline {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Key System</h1>
+    <p class="subtitle">Here is website to get key swiftbara hub!</p>
+    
+    <div class="container">
+        <!-- Profile Card - Hình chữ nhật dọc bên trái -->
+        <div class="profile-card">
+            <div class="avatar">
+                <img src="https://i.ibb.co/7dc-Dx-R8b/logo-swiftbara.jpg" alt="Swiftbara Logo" class="avatar-img">
+            </div>
+            
+            <div class="user-info">
+                <div class="user-name">Swiftbara Hub</div>
+                <div class="user-title">Scripybara</div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div>
+                        <div class="stat-number" id="key-finish-count">0</div>
+                        <div class="stat-label">Key Finish</div>
+                    </div>
+                    <div>
+                        <div class="stat-number" id="follower-count">89</div>
+                        <div class="stat-label">Follow</div>
+                    </div>
+                    <div>
+                        <div class="stat-number">2025</div>
+                        <div class="stat-label">Establish</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="get-key-btn" onclick="showKeyModal()">
+                🔑 Get Key
+            </button>
+
+            <button class="follow-btn" id="follow-btn" onclick="requestFollow()">
+                ➕ Follow
+            </button>
+        </div>
+        
+        <!-- Content chính -->
+        <div class="content">
+            <h2>👋 Hi!, I am Scripybara</h2>
+            <p>Welcome to Swiftbara Hub! Can you spare some time to get the key, I need motivation to make more good scripts.</p>
+            
+            <div class="button-container">
+                <button class="glow-button" onclick="changeBackground()">
+                    <span class="button-text">🎨 Change background color</span>
+                </button>
+
+                <button class="glow-button" onclick="showStats()">
+                    <span class="button-text">📊 Stats</span>
+                </button>
+            </div>
+
+            <div id="message" style="margin-top: 20px; font-size: 1.1em; text-align: center; min-height: 30px;"></div>
+            
+            <div style="margin-top: 30px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                <p><strong>📊 Current information:</strong></p>
+                <p>Time: <strong id="current-time"></strong></p>
+                <p>Key Finish: <strong id="keys-display">0</strong> 🔑</p>
+                <p>Followers: <strong id="followers-display">89</strong> 👥</p>
+                <p>Status: <strong>Online</strong> 🟢</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Options Modal -->
+    <div class="modal" id="keyModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('keyModal')">×</button>
+            <div style="font-size: 3em; margin-bottom: 15px;">🔑</div>
+            <h3 class="modal-title">Choose how to get Key</h3>
+            <p class="modal-description">Please choose one of the methods below to receive your key</p>
+            <div class="modal-buttons">
+                <button class="modal-btn linkvertise-btn" onclick="redirectToLinkvertise()">
+                    🌐 Linkvertise
+                </button>
+                <button class="modal-btn lootlab-btn" onclick="redirectToLootlab()">
+                    🎁 Lootlab
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div class="modal" id="notificationModal">
+        <div class="modal-content">
+            <div style="font-size: 3em; margin-bottom: 15px;">🔔</div>
+            <h3>Turn on notifications?</h3>
+            <p>Do you want to enable notifications to receive updates from Key Finish System?</p>
+            <div class="notification-modal-buttons">
+                <button class="notification-modal-btn accept" onclick="acceptNotifications()">✅ Yes</button>
+                <button class="notification-modal-btn decline" onclick="declineNotifications()">❌ No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let keyFinishCount = 0;
+        let followers = 89;
+        let isFollowing = false;
+        let notificationsEnabled = false;
+
+        // Cập nhật thời gian
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = 
+                now.toLocaleString('vi-VN');
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Hiển thị modal chọn phương thức key
+        function showKeyModal() {
+            document.getElementById('keyModal').style.display = 'flex';
+        }
+
+        // Chuyển hướng đến Linkvertise
+        function redirectToLinkvertise() {
+            // Tăng Key Finish count
+            keyFinishCount++;
+            updateUI();
+            
+            // Chuyển hướng
+            window.location.href = 'https://direct-link.net/1386963/6WlxLMkmHFfR';
+        }
+
+        // Chuyển hướng đến Lootlab
+        function redirectToLootlab() {
+            // Tăng Key Finish count
+            keyFinishCount++;
+            updateUI();
+            
+            // Chuyển hướng
+            window.location.href = 'https://loot-link.com/s?aGBM0iK9';
+        }
+
+        // Update UI
+        function updateUI() {
+            document.getElementById('key-finish-count').textContent = keyFinishCount;
+            document.getElementById('keys-display').textContent = keyFinishCount;
+            document.getElementById('follower-count').textContent = followers;
+            document.getElementById('followers-display').textContent = followers;
+        }
+
+        // Đóng modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Request Follow với thông báo
+        function requestFollow() {
+            if (!isFollowing) {
+                document.getElementById('notificationModal').style.display = 'flex';
+            } else {
+                toggleFollow();
+            }
+        }
+
+        // Chấp nhận thông báo
+        function acceptNotifications() {
+            notificationsEnabled = true;
+            closeModal('notificationModal');
+            toggleFollow();
+            showMessage("🔔 Notifications are enabled! Thank you!", "#00c6ff");
+        }
+
+        // Từ chối thông báo
+        function declineNotifications() {
+            notificationsEnabled = false;
+            closeModal('notificationModal');
+            toggleFollow();
+            showMessage("👍 Followed! Notifications not enabled.", "#96c93d");
+        }
+
+        // Follow/Unfollow function
+        function toggleFollow() {
+            const followBtn = document.getElementById('follow-btn');
+            
+            if (!isFollowing) {
+                // Follow
+                followers++;
+                followBtn.textContent = '✅ Following';
+                followBtn.classList.add('following');
+                isFollowing = true;
+                
+                if (notificationsEnabled) {
+                    showMessage("🎉 Thank you for following with notifications!", "#96c93d");
+                } else {
+                    showMessage("🎉 Thank you for following!", "#96c93d");
+                }
+            } else {
+                // Unfollow
+                followers--;
+                followBtn.textContent = '➕ Follow';
+                followBtn.classList.remove('following');
+                isFollowing = false;
+                notificationsEnabled = false;
+                
+                showMessage("😢 You are unfollow...", "#ff6b6b");
+            }
+            
+            updateUI();
+        }
+
+        // Đổi màu nền ngẫu nhiên
+        function changeBackground() {
+            const colors = [
+                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+            ];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.background = randomColor;
+            
+            showMessage("🎨 The background color has been changed!", "white");
+        }
+
+        // Hiển thị stats
+        function showStats() {
+            const statsMessage = `📊 Current statistics:\n\n🔑 Key Finish: ${keyFinishCount}\n👥 Followers: ${followers}\n🔔 Notification: ${notificationsEnabled ? 'Turned on ✅' : 'Not turned on ❌'}`;
+            alert(statsMessage);
+        }
+
+        // Hiển thị message
+        function showMessage(text, color) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = text;
+            messageElement.style.color = color;
+            
+            messageElement.style.opacity = '0';
+            messageElement.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                messageElement.style.opacity = '1';
+            }, 100);
+        }
+
+        // Đóng modal khi click outside
+        window.onclick = function(event) {
+            const modals = document.getElementsByClassName('modal');
+            for (let modal of modals) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        }
+
+        // Khởi tạo
+        window.onload = function() {
+            updateUI();
+        };
+    </script>
+</body>
+</html>
